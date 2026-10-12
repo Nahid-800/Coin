@@ -22,7 +22,7 @@ export default async function handler(req, res) {
     const { messages, model = "inclusionai/ling-3.0-flash-vl" } = req.body;
 
     // আপনার Novita API Key এখানে বসান অথবা Vercel Environment Variable এ NOVITA_API_KEY দিন
-    const API_KEY = process.env.NOVITA_API_KEY || "YOUR_NOVITA_API_KEY";
+    const API_KEY = process.env.NOVITA_API_KEY || "sk_VPqx4oi03j2hWZsWy6Tky1ZQ748vKCI8SzJnsaFLBoU";
 
     const response = await fetch("https://api.novita.ai/v3/openai/chat/completions", {
       method: "POST",
