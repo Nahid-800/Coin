@@ -18,7 +18,7 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { messages, model = "ling-3.0-flash-vl" } = req.body;
+    const { messages, model = "inclusionai/ling-3.0-flash-vl" } = req.body;
 
     // আপনার Novita AI API Key এখানে বসান (অথবা Environment Variable ব্যবহার করতে পারেন)
     const API_KEY = process.env.NOVITA_API_KEY || "sk_VPqx4oi03j2hWZsWy6Tky1ZQ748vKCI8SzJnsaFLBoU";
