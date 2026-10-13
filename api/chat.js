@@ -19,7 +19,7 @@ export default async function handler(req, res) {
 
   try {
     // সঠিক মডেল আইডি (inclusionai/ সহ)
-    const { messages, model = "inclusionai/ling-3.0-flash-vl" } = req.body;
+    const { messages, model = "deepseek/deepseek-v4.1-flash" } = req.body;
 
     // আপনার Novita API Key এখানে বসান অথবা Vercel Environment Variable এ NOVITA_API_KEY দিন
     const API_KEY = process.env.NOVITA_API_KEY || "sk_VPqx4oi03j2hWZsWy6Tky1ZQ748vKCI8SzJnsaFLBoU";
