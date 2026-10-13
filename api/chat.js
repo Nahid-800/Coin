@@ -11,7 +11,6 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: 'messages array is required' });
   }
 
-  // এখানে আপনার Novita API Key বসান
   const API_KEY = process.env.NOVITA_API_KEY || 'sk_VPqx4oi03j2hWZsWy6Tky1ZQ748vKCI8SzJnsaFLBoU';
 
   try {
@@ -23,7 +22,7 @@ export default async function handler(req, res) {
       },
       body: JSON.stringify({
         model: 'deepseek/deepseek-v4.1-flash',
-        messages: messages,          // কোনো system prompt নেই
+        messages: messages,
         max_tokens: 196608,
         temperature: 1,
         top_p: 1,
@@ -32,7 +31,7 @@ export default async function handler(req, res) {
         presence_penalty: 0,
         frequency_penalty: 0,
         repetition_penalty: 1,
-        stream: false
+        stream: true                    // ← স্ট্রিমিং চালু
       })
     });
 
@@ -44,10 +43,23 @@ export default async function handler(req, res) {
       });
     }
 
-    const data = await response.json();
-    const content = data.choices?.[0]?.message?.content || '';
+    // Streaming response পাঠানো
+    res.setHeader('Content-Type', 'text/event-stream');
+    res.setHeader('Cache-Control', 'no-cache');
+    res.setHeader('Connection', 'keep-alive');
 
-    return res.status(200).json({ content });
+    const reader = response.body.getReader();
+    const decoder = new TextDecoder();
+
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+
+      const chunk = decoder.decode(value, { stream: true });
+      res.write(chunk);                 // সরাসরি ক্লায়েন্টে পাঠাচ্ছি
+    }
+
+    res.end();
 
   } catch (error) {
     console.error('Server Error:', error);
